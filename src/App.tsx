@@ -7,7 +7,6 @@ import {
 import { Header } from "./components/Header";
 import { ProductFilters } from "./components/ProductFilter";
 import { ProductGrid } from "./components/ProductGrid";
-import { Category } from "./types";
 
 function App() {
   const { data: products, error, isLoading } = useGetProductsQuery();
@@ -44,6 +43,7 @@ function App() {
             <ProductGrid
               products={products}
               selectedCategory={selectedCategory}
+              isLoading={isLoading}
             />
           </main>
         </div>

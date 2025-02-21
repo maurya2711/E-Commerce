@@ -4,13 +4,15 @@ import { Grid, List } from "lucide-react";
 import { ProductCard } from "./ProductCards";
 import { Product } from "../types";
 import Pagination from "./Pagination"; // Import the Pagination component
+import ProductCardSkeleton from "./ProductCardSkeleton"; // Import the Skeleton Loader
 
 interface ProductGridProps {
   products: Product[] | undefined;
   selectedCategory: string | null; // New prop
+  isLoading: boolean; // New prop to indicate loading state
 }
 
-export function ProductGrid({ products = [], selectedCategory }: ProductGridProps) {
+export function ProductGrid({ products = [], selectedCategory, isLoading }: ProductGridProps) {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState("default");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -67,9 +69,15 @@ export function ProductGrid({ products = [], selectedCategory }: ProductGridProp
             : "space-y-6"
         }
       >
-        {currentProducts.map((product) => (
-          <ProductCard key={product.id} product={product} viewMode={viewMode} />
-        ))}
+        {isLoading ? ( // Show skeleton loaders while loading
+          Array.from({ length: itemsPerPage }).map((_, index) => (
+            <ProductCardSkeleton key={index} />
+          ))
+        ) : (
+          currentProducts.map((product) => (
+            <ProductCard key={product.id} product={product} viewMode={viewMode} />
+          ))
+        )}
       </div>
 
       {/* Use the Pagination Component */}
